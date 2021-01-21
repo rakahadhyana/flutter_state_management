@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "name": "Product"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "float",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "products"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image_url": {
+      "type": "string"
+    }
+  }
+}

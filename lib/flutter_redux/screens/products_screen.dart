@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_state_management/flutter_redux/redux/actions.dart';
+import 'package:flutter_app_state_management/flutter_redux/widgets/product_item_widget.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import '../store/app_state.dart';
+
+final gradientBackground = BoxDecoration(
+    gradient: LinearGradient(
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+        stops: [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+        colors: [
+      Colors.grey[300],
+      Colors.grey[400],
+      Colors.grey[500],
+      Colors.grey[600],
+      Colors.grey[700]
+    ]));
 
 class ProductsScreen extends StatefulWidget {
   static const routeName = "/products";
@@ -20,7 +39,7 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    StoreProvider.of<AppState>(context).dispatch(getUserAction);
+    final Orientation orientation = MediaQuery.of(context).orientation;
     return StoreConnector<AppState, AppState>(
       converter: (Store<AppState> store) => store.state,
       builder: (context, state) {
@@ -42,7 +61,33 @@ class _ProductsScreenState extends State<ProductsScreen> {
               )
             ],
           ),
-          body: Text('Products Page'),
+          body: Container(
+            decoration: gradientBackground,
+            child: StoreConnector<AppState, AppState>(
+                converter: (store) => store.state,
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: SafeArea(
+                          child: GridView.builder(
+                              padding: EdgeInsets.all(10),
+                              itemCount: state.products.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                                childAspectRatio: 2 / 3,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemBuilder: (context, i) =>
+                                  ProductItemWidget(item: state.products[i])),
+                        ),
+                      )
+                    ],
+                  );
+                }),
+          ),
         );
       },
     );
@@ -51,6 +96,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     super.initState();
-    // widget.onInit();
+    widget.onInit();
   }
 }

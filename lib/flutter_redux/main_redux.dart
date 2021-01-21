@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-            primarySwatch: Colors.green,
-            accentColor: Colors.indigo,
+            primarySwatch: Colors.blueGrey,
+            accentColor: Colors.pinkAccent,
             fontFamily: 'Lato',
             visualDensity: VisualDensity.adaptivePlatformDensity),
         home: RegisterScreen(),
@@ -38,6 +38,8 @@ class MyApp extends StatelessWidget {
           LoginScreen.routeName: (context) => LoginScreen(),
           ProductsScreen.routeName: (context) => ProductsScreen(
                 onInit: () {
+                  StoreProvider.of<AppState>(context)
+                      .dispatch(getProductsAction);
                   StoreProvider.of<AppState>(context).dispatch(getUserAction);
                 },
               )
