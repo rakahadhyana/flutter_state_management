@@ -6,13 +6,14 @@ import 'package:flutter_app_state_management/flutter_redux/screens/register_scre
 import 'package:flutter_app_state_management/flutter_redux/store/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 import 'screens/products_screen.dart';
 
 void main() {
   final store = Store<AppState>((state, action) => appReducer(state, action),
-      initialState: AppState.initial(), middleware: [thunkMiddleware]);
+      initialState: AppState.initial(), middleware: [thunkMiddleware, LoggingMiddleware.printer()]);
   runApp(MyApp(store: store));
 }
 
